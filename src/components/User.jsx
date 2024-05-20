@@ -1,9 +1,10 @@
-import React from 'react';
+import React from "react";
+import UserTable from "./Usertable";
 
 const User = () => {
   return (
-    <div>
-      <h2>User Page</h2>
+    <div className="px-10 flex flex-col gap-10">
+      <UserTable />
     </div>
   );
 };

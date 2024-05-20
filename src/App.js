@@ -16,7 +16,7 @@ const App = () => {
         <Sidebar />
         <div className="flex-1 flex flex-col">
           <Header />
-          <div className="p-6 bg-gray-100 min-h-screen">
+          <div className="p-6 bg-gray-100 min-h-screen relative w-[80%] left-[20%]">
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/user" element={<User />} />
