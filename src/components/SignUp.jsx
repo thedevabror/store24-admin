@@ -9,22 +9,24 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
-const Login = () => {
+const SignUp = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { login } = useAuth();
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const username = formData.get("email");
+    const name = formData.get("name");
+    const email = formData.get("email");
     const password = formData.get("password");
     const user = {
-      email: username,
+      name: name,
+      email: email,
       password: password,
     };
     dispatch(logInUserStart());
     try {
-      const response = await AuthService.adminLogin(user);
+      const response = await AuthService.adminRegister(user);
       dispatch(logInUserSuccess(response));
       console.log(response);
       navigate("/dashboard");
@@ -60,6 +62,22 @@ const Login = () => {
             >
               <div>
                 <label
+                  for="name"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Your name
+                </label>
+                <input
+                  type="name"
+                  name="name"
+                  id="name"
+                  className="bg-gray-50 border outline-none border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="Abror Abdukayumov"
+                  required="true"
+                />
+              </div>
+              <div>
+                <label
                   for="email"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
@@ -71,7 +89,7 @@ const Login = () => {
                   id="email"
                   className="bg-gray-50 border outline-none border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="name@company.com"
-                  required=""
+                  required="true"
                 />
               </div>
               <div>
@@ -87,7 +105,7 @@ const Login = () => {
                   id="password"
                   placeholder="••••••••"
                   className="bg-gray-50 border outline-none border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  required=""
+                  required="true"
                 />
               </div>
               <div className="flex items-center justify-between">
@@ -126,7 +144,7 @@ const Login = () => {
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 Don’t have an account yet?{" "}
                 <Link
-                  to={"/register"}
+                  to={"/login"}
                   className="font-medium text-primary-600 hover:underline dark:text-primary-500"
                 >
                   Sign up
@@ -140,4 +158,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignUp;

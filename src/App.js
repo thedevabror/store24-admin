@@ -1,34 +1,55 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Sidebar from './components/Sidebar';
-import Header from './components/Header';
-import Dashboard from './components/Dashboard';
-import User from './components/User';
-import Product from './components/Product';
-import Blog from './components/Blog';
-import Login from './components/Login';
-import NotFound from './components/NotFound';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import Sidebar from "./components/Sidebar";
+import Header from "./components/Header";
+import Dashboard from "./components/Dashboard";
+import User from "./components/User";
+import Product from "./components/Product";
+import Blog from "./components/Blog";
+import NotFound from "./components/NotFound";
+import Login from "./components/Login";
+import Layout from "./components/Layout";
+import PrivateRoute from "./routes/PrivateRoute";
+import { AuthProvider } from "./context/AuthContext";
+import PublicRoute from "./routes/PublicRoute";
+import SignUp from "./components/SignUp";
+import Orders from "./components/Orders";
+import CreateProducts from "./components/CreateProducts";
+import Categories from "./components/Categories";
+import CreateCategry from "./components/CreateCategry";
+// import PrivateRoute from "./PrivateRoute";
 
 const App = () => {
   return (
-    <Router>
-      <div className="flex">
-        <Sidebar />
-        <div className="flex-1 flex flex-col">
-          <Header />
-          <div className="p-6 bg-gray-100 min-h-screen relative w-[80%] left-[20%]">
-            <Routes>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/user" element={<User />} />
-              <Route path="/product" element={<Product />} />
-              <Route path="/blog" element={<Blog />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </div>
+    <AuthProvider>
+      <Router>
+        <div className="bg-[#212020] h-screen">
+          <Routes>
+            <Route path="/login" element={<PublicRoute component={<Login />} />} />
+            <Route path="/register" element={<PublicRoute component={<SignUp />} />} />
+            <Route
+              path="/dashboard"
+              element={
+                <PrivateRoute>
+                  <Layout />
+                </PrivateRoute>
+              }
+            >
+              <Route index element={<Dashboard />} />
+              <Route path="user" element={<User />} />
+              <Route path="product" element={<Product />} />
+              <Route path="blog" element={<Blog />} />
+              <Route path="orders" element={<Orders />} />
+              <Route path="categories" element={<Categories />} />
+              <Route path="categories/create" element={<CreateCategry />} />
+              <Route path="product/create" element={<CreateProducts />} />
+            </Route>
+            <Route path="*" element={<NotFound />} />
+            <Route path="/" element={<Navigate to="/dashboard" />} />
+          </Routes>
         </div>
-      </div>
-    </Router>
+      </Router>
+    </AuthProvider>
   );
 };
 

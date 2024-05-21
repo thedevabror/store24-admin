@@ -8,7 +8,7 @@ const Header = () => {
           <h1 className="text-2xl font-semibold">Hi, Welcome back 👋</h1>
         </div>
         <div className="flex items-center space-x-4">
-          <div className="text-gray-600">Jaydon Frankie</div>
+          <div className="text-gray-600">Abror Abdukayumov</div>
           <img
             className="h-10 w-10 rounded-full"
             src="https://via.placeholder.com/150"

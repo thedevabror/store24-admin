@@ -1,6 +1,15 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
-import { FaUser, FaProductHunt, FaBlogger, FaSignInAlt, FaChartBar, FaChartPie } from 'react-icons/fa';
+import React from "react";
+import { NavLink } from "react-router-dom";
+import {
+  FaUser,
+  FaProductHunt,
+  FaBlogger,
+  FaChartBar,
+  FaChartPie,
+  FaFirstOrder,
+  FaJediOrder,
+  FaCreativeCommonsSampling,
+} from "react-icons/fa";
 
 const Sidebar = () => {
   return (
@@ -9,53 +18,65 @@ const Sidebar = () => {
         <h1 className="text-2xl font-bold">Dashboard</h1>
       </div>
       <nav className="mt-10">
-        <NavLink 
-          to="/" 
-          className={({ isActive }) => 
-            isActive ? "flex items-center py-2 px-8 bg-[#6d6b6b]" : "flex items-center py-2 px-8 text-gray-400 hover:text-gray-100 hover:bg-gray-700"
+        <NavLink
+          to=""
+          className={({ isActive }) =>
+            isActive
+              ? "flex items-center py-2 px-8 bg-[#6d6b6b]"
+              : "flex items-center py-2 px-8 text-gray-400 hover:text-gray-100 hover:bg-gray-700"
           }
         >
           <FaChartBar className="mr-3" /> Dashboard
         </NavLink>
-        <NavLink 
-          to="/user" 
-          className={({ isActive }) => 
-            isActive ? "flex items-center py-2 px-8 bg-[#6d6b6b]" : "flex items-center py-2 px-8 text-gray-400 hover:text-gray-100 hover:bg-gray-700"
+        <NavLink
+          to="user"
+          className={({ isActive }) =>
+            isActive
+              ? "flex items-center py-2 px-8 bg-[#6d6b6b]"
+              : "flex items-center py-2 px-8 text-gray-400 hover:text-gray-100 hover:bg-gray-700"
           }
         >
           <FaUser className="mr-3" /> User
         </NavLink>
-        <NavLink 
-          to="/product" 
-          className={({ isActive }) => 
-            isActive ? "flex items-center py-2 px-8 bg-[#6d6b6b]" : "flex items-center py-2 px-8 text-gray-400 hover:text-gray-100 hover:bg-gray-700"
+        <NavLink
+          to="product"
+          className={({ isActive }) =>
+            isActive
+              ? "flex items-center py-2 px-8 bg-[#6d6b6b]"
+              : "flex items-center py-2 px-8 text-gray-400 hover:text-gray-100 hover:bg-gray-700"
           }
         >
           <FaProductHunt className="mr-3" /> Product
         </NavLink>
-        <NavLink 
-          to="/blog" 
-          className={({ isActive }) => 
-            isActive ? "flex items-center py-2 px-8 bg-[#6d6b6b]" : "flex items-center py-2 px-8 text-gray-400 hover:text-gray-100 hover:bg-gray-700"
+        <NavLink
+          to="blog"
+          className={({ isActive }) =>
+            isActive
+              ? "flex items-center py-2 px-8 bg-[#6d6b6b]"
+              : "flex items-center py-2 px-8 text-gray-400 hover:text-gray-100 hover:bg-gray-700"
           }
         >
           <FaBlogger className="mr-3" /> Blog
         </NavLink>
-        <NavLink 
-          to="/login" 
-          className={({ isActive }) => 
-            isActive ? "flex items-center py-2 px-8 bg-[#6d6b6b]" : "flex items-center py-2 px-8 text-gray-400 hover:text-gray-100 hover:bg-gray-700"
+        <NavLink
+          to="orders"
+          className={({ isActive }) =>
+            isActive
+              ? "flex items-center py-2 px-8 bg-[#6d6b6b]"
+              : "flex items-center py-2 px-8 text-gray-400 hover:text-gray-100 hover:bg-gray-700"
           }
         >
-          <FaSignInAlt className="mr-3" /> Login
+          <FaJediOrder className="mr-3" /> Orders
         </NavLink>
-        <NavLink 
-          to="/notfound" 
-          className={({ isActive }) => 
-            isActive ? "flex items-center py-2 px-8 bg-[#6d6b6b]" : "flex items-center py-2 px-8 text-gray-400 hover:text-gray-100 hover:bg-gray-700"
+        <NavLink
+          to="categories"
+          className={({ isActive }) =>
+            isActive
+              ? "flex items-center py-2 px-8 bg-[#6d6b6b]"
+              : "flex items-center py-2 px-8 text-gray-400 hover:text-gray-100 hover:bg-gray-700"
           }
         >
-          <FaChartPie className="mr-3" /> Not Found
+          <FaCreativeCommonsSampling className="mr-3" /> Categories
         </NavLink>
       </nav>
     </div>
