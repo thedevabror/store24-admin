@@ -60,7 +60,7 @@ const CreateProducts = () => {
       }
     };
     getCatBrands();
-  }, []);
+  }, [dispatch]);
 
   const handleSubmit = (values) => {
     const image = values.ProductImages.fileList;

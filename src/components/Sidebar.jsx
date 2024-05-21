@@ -5,8 +5,6 @@ import {
   FaProductHunt,
   FaBlogger,
   FaChartBar,
-  FaChartPie,
-  FaFirstOrder,
   FaJediOrder,
   FaCreativeCommonsSampling,
 } from "react-icons/fa";
