@@ -46,6 +46,7 @@ const CreateProducts = () => {
   const { productCategories } = useSelector((state) => state.productCategory);
   const [form] = Form.useForm();
   const [fileList, setFileList] = useState([]);
+  const [imgList, setImgList] = useState([]);
   useEffect(() => {
     const getCatBrands = async () => {
       dispatch(getBrandsStart());
@@ -64,19 +65,22 @@ const CreateProducts = () => {
   }, [dispatch]);
 
   const handleSubmit = async (values) => {
-    // const image = values.ProductImages.fileList;
-    // console.log(image);
-    const formData = new FormData();
-    formData.append("name", values.name);
-    formData.append("description", values.description);
-    formData.append("price", values.price);
-    formData.append("category", values.category);
-    formData.append("brand", values.brand); // brand id qo'shish
-
-    fileList.forEach((file) => {
-      formData.append("images", file.originFileObj);
+    const image = values.images.fileList;
+    image.forEach((file) => {
+      setImgList(file.lastModified)
     });
-    console.log(formData)
+    console.log(imgList)
+    const formData = new FormData();
+    // formData.append("name", values.name);
+    // formData.append("description", values.description);
+    // formData.append("price", values.price);
+    // formData.append("category", values.category);
+    // formData.append("brand", values.brand); // brand id qo'shish
+
+    // fileList.forEach((file) => {
+    //   formData.append("images", file.originFileObj);
+    // });
+    console.log(formData);
     try {
       const response = await ProductService.createProduct(formData);
       console.log(response);
