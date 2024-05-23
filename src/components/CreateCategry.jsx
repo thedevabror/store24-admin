@@ -1,6 +1,8 @@
 import { Button, Form, Input, Select } from "antd";
 import React from "react";
 import { useSelector } from "react-redux";
+import ProductService from "../service/product.service";
+import { Link, useNavigate } from "react-router-dom";
 
 const { Option } = Select;
 const formItemLayout = {
@@ -25,14 +27,26 @@ const formItemLayout = {
 const CreateCategry = () => {
   const { productCategories } = useSelector((state) => state.productCategory);
   const [form] = Form.useForm();
+  const navigate = useNavigate();
 
   const handleSubmit = async (values) => {
-    console.log(values);
+    try {
+      const response = await ProductService.createCategory(values);
+      navigate("/dashboard/categories");
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <div>
-      <div>
+      <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-semibold">Create Category</h1>
+        <Link
+          to={"/dashboard/categories"}
+          className="bg-blue-600 text-white px-4 py-2 rounded-md"
+        >
+          Cancel
+        </Link>
       </div>
       <Form
         {...formItemLayout}
@@ -58,8 +72,8 @@ const CreateCategry = () => {
           name="parent"
           rules={[
             {
-              required: true,
-              message: "Please select product brand!",
+              required: false,
+              message: "Please select category parent!",
             },
           ]}
         >
@@ -69,11 +83,13 @@ const CreateCategry = () => {
             }}
             allowClear
           >
-            {productCategories.filter(productCategories.parent === null).map((category) => (
-              <Option key={category._id} value={category._id}>
-                {category.name}
-              </Option>
-            ))}
+            {productCategories
+              .filter((item) => item.parent === null)
+              .map((category) => (
+                <Option key={category._id} value={category._id}>
+                  {category.name}
+                </Option>
+              ))}
           </Select>
         </Form.Item>
 

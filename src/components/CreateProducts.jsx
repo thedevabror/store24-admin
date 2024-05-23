@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
   Button,
-  DatePicker,
   Form,
   Input,
   InputNumber,
@@ -16,10 +15,11 @@ import {
   getBrandsFailur,
   getBrandsStart,
   getBrandsSucces,
+  getCategoryFailur,
   getCategoryStart,
+  getCategorySucces,
 } from "../app/slice/products";
 
-const { RangePicker } = DatePicker;
 const { Option } = Select;
 const formItemLayout = {
   labelCol: {
@@ -43,39 +43,63 @@ const formItemLayout = {
 const CreateProducts = () => {
   const dispatch = useDispatch();
   const { allBrands } = useSelector((state) => state.productCategory);
+  const { productCategories } = useSelector((state) => state.productCategory);
   const [form] = Form.useForm();
   const [fileList, setFileList] = useState([]);
-  //   const [fileList, setFileList] = useState([]);
   useEffect(() => {
     const getCatBrands = async () => {
       dispatch(getBrandsStart());
-      dispatch(getCategoryStart())
+      dispatch(getCategoryStart());
       try {
         const res = await ProductService.getBrands();
-        const respons = await ProductService.getCategories()
+        const respons = await ProductService.getCategories();
         dispatch(getBrandsSucces(res));
-        console.log(respons)
+        dispatch(getCategorySucces(respons));
       } catch (error) {
         dispatch(getBrandsFailur());
+        dispatch(getCategoryFailur());
       }
     };
     getCatBrands();
   }, [dispatch]);
 
-  const handleSubmit = (values) => {
-    const image = values.ProductImages.fileList;
-    console.log(image);
-    console.log(values);
+  const handleSubmit = async (values) => {
+    // const image = values.ProductImages.fileList;
+    // console.log(image);
+    const formData = new FormData();
+    formData.append("name", values.name);
+    formData.append("description", values.description);
+    formData.append("price", values.price);
+    formData.append("category", values.category);
+    formData.append("brand", values.brand); // brand id qo'shish
+
+    fileList.forEach((file) => {
+      formData.append("images", file.originFileObj);
+    });
+    console.log(formData)
+    try {
+      const response = await ProductService.createProduct(formData);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const handleFileChange = ({ fileList }) => setFileList(fileList);
+  const handleChange = ({ fileList: newFileList }) => {
+    setFileList(newFileList.slice(-10)); // Cheklov: faqat 10 ta fayl saqlanadi
+  };
 
   return (
     <div className="p-6">
       <div>
         <h1 className="text-2xl font-semibold">Create Product</h1>
       </div>
-      <Form {...formItemLayout} variant="filled" onFinish={handleSubmit} form={form}>
+      <Form
+        {...formItemLayout}
+        variant="filled"
+        onFinish={handleSubmit}
+        form={form}
+      >
         <Form.Item
           label="Product Name"
           name="name"
@@ -91,7 +115,7 @@ const CreateProducts = () => {
 
         <Form.Item
           label="Product Desctiption"
-          name="desctiption"
+          name="description"
           rules={[
             {
               required: true,
@@ -150,7 +174,7 @@ const CreateProducts = () => {
             allowClear
           >
             {allBrands.map((brand) => (
-              <Option key={brand._id} value={brand.name}>
+              <Option key={brand._id} value={brand._id}>
                 {brand.name}
               </Option>
             ))}
@@ -158,12 +182,12 @@ const CreateProducts = () => {
         </Form.Item>
 
         <Form.Item
-          label="Product brand"
-          name="brand"
+          label="Product Category"
+          name="category"
           rules={[
             {
               required: true,
-              message: "Please select product brand!",
+              message: "Please select product category!",
             },
           ]}
         >
@@ -174,42 +198,19 @@ const CreateProducts = () => {
             }}
             allowClear
           >
-            {allBrands.map((brand) => (
-              <Option key={brand._id} value={brand.name}>
-                {brand.name}
-              </Option>
-            ))}
+            {productCategories
+              .filter((item) => item.parent !== null)
+              .map((category) => (
+                <Option key={category._id} value={category._id}>
+                  {category.name}
+                </Option>
+              ))}
           </Select>
         </Form.Item>
 
         <Form.Item
-          label="DatePicker"
-          name="DatePicker"
-          rules={[
-            {
-              required: true,
-              message: "Please input!",
-            },
-          ]}
-        >
-          <DatePicker />
-        </Form.Item>
-
-        <Form.Item
-          label="RangePicker"
-          name="RangePicker"
-          rules={[
-            {
-              required: true,
-              message: "Please input!",
-            },
-          ]}
-        >
-          <RangePicker />
-        </Form.Item>
-        <Form.Item
           label="Product Images"
-          name="ProductImages"
+          name="images"
           rules={[
             {
               required: true,
@@ -220,11 +221,10 @@ const CreateProducts = () => {
           <Upload
             listType="picture"
             fileList={fileList}
-            onChange={handleFileChange}
+            onChange={handleChange}
             beforeUpload={() => false}
-            multiple
           >
-            <Button icon={<UploadOutlined />}>Select Images</Button>
+            <Button icon={<UploadOutlined />}>Upload (Max: 10)</Button>
           </Upload>
         </Form.Item>
 

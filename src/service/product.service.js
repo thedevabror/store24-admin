@@ -11,7 +11,15 @@ const ProductService = {
   },
   async getCategories() {
     const { data } = await api.get(`categories`);
-    return data
+    return data;
+  },
+  async createCategory(values) {
+    const { data } = await api.post(`categories/category`, values);
+    return data;
+  },
+  async createProduct(formData) {
+    const { data } = await api.post(`admin/products`, formData);
+    return data;
   },
 };
 

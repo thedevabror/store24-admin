@@ -2,14 +2,16 @@ import React from "react";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
 import { Outlet } from "react-router-dom";
+import MobileBar from "./MobileBar";
 
 const Layout = () => {
   return (
-    <div className="flex">
+    <div className="flex min-[200px]:flex-col md:flex-row">
       <Sidebar />
+      <MobileBar />
       <div className="flex-1 flex flex-col">
         <Header />
-        <div className="p-6 bg-gray-100 min-h-screen relative w-[80%] left-[20%]">
+        <div className="p-2 bg-gray-100 min-h-screen relative md:w-[80%] md:left-[20%] min-[400px]:w-full min-[400px]:left-0">
           <Outlet />
         </div>
       </div>

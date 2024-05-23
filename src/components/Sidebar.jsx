@@ -11,7 +11,7 @@ import {
 
 const Sidebar = () => {
   return (
-    <div className="h-screen fixed bg-gray-800 text-white w-[20%]">
+    <div className="h-screen fixed md:block min-[400px]:hidden bg-gray-800 text-white w-[20%]">
       <div className="p-6 text-center">
         <h1 className="text-2xl font-bold">Dashboard</h1>
       </div>

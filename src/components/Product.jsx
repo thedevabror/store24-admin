@@ -17,7 +17,6 @@ const Product = () => {
       try {
         const response = await ProductService.getProducts();
         dispatch(getProductSucces(response));
-        console.log(allProducts);
       } catch (error) {
         dispatch(getProductFailur());
         console.log(error);
@@ -27,7 +26,7 @@ const Product = () => {
   }, [allProducts, dispatch]);
 
   return (
-    <div className="p-6">
+    <div className="">
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-semibold">Products</h1>
         <Link
@@ -37,7 +36,7 @@ const Product = () => {
           + New Product
         </Link>
       </div>
-      <div className="grid grid-cols-6 gap-10">
+      <div className="grid min-[400px]:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 2xl:grid-cols-8 gap-5">
         {allProducts?.map((item) => (
           <div
             key={item._id}
@@ -45,7 +44,7 @@ const Product = () => {
           >
             <div className="product-img overflow-hidden">
               <img
-                src={`http://localhost:5000/uploads/${
+                src={`http://143.110.239.160:5000/uploads/${
                   item.images.length !== 0
                     ? item.images[0].slice(8)
                     : "assets/product-2.jpg"
