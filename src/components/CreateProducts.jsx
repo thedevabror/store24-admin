@@ -1,13 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Button,
-  Form,
-  Input,
-  InputNumber,
-  Mentions,
-  Select,
-  Upload,
-} from "antd";
+import { Button, Form, Input, InputNumber, Mentions, Select, Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import ProductService from "../service/product.service";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,34 +11,28 @@ import {
   getCategoryStart,
   getCategorySucces,
 } from "../app/slice/products";
+import { useNavigate } from "react-router-dom";
 
 const { Option } = Select;
 const formItemLayout = {
   labelCol: {
-    xs: {
-      span: 24,
-    },
-    sm: {
-      span: 6,
-    },
+    xs: { span: 24 },
+    sm: { span: 6 },
   },
   wrapperCol: {
-    xs: {
-      span: 24,
-    },
-    sm: {
-      span: 14,
-    },
+    xs: { span: 24 },
+    sm: { span: 14 },
   },
 };
 
 const CreateProducts = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   const { allBrands } = useSelector((state) => state.productCategory);
   const { productCategories } = useSelector((state) => state.productCategory);
   const [form] = Form.useForm();
   const [fileList, setFileList] = useState([]);
-  const [imgList, setImgList] = useState([]);
+
   useEffect(() => {
     const getCatBrands = async () => {
       dispatch(getBrandsStart());
@@ -65,32 +51,30 @@ const CreateProducts = () => {
   }, [dispatch]);
 
   const handleSubmit = async (values) => {
-    const image = values.images.fileList;
-    image.forEach((file) => {
-      setImgList(file.lastModified)
-    });
-    console.log(imgList)
     const formData = new FormData();
-    // formData.append("name", values.name);
-    // formData.append("description", values.description);
-    // formData.append("price", values.price);
-    // formData.append("category", values.category);
-    // formData.append("brand", values.brand); // brand id qo'shish
+    formData.append("name", values.name);
+    formData.append("description", values.description);
+    formData.append("price", values.price);
+    formData.append("category", values.category);
+    formData.append("brand", values.brand); 
+    formData.append("color", values.color); 
+    formData.append("attributes", JSON.stringify([])); // Adjust attributes if needed
 
-    // fileList.forEach((file) => {
-    //   formData.append("images", file.originFileObj);
-    // });
-    console.log(formData);
+    fileList.forEach((file) => {
+      formData.append("images", file.originFileObj);
+    });
+
     try {
       const response = await ProductService.createProduct(formData);
       console.log(response);
+      navigate("/dashboard/product")
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
   const handleChange = ({ fileList: newFileList }) => {
-    setFileList(newFileList.slice(-10)); // Cheklov: faqat 10 ta fayl saqlanadi
+    setFileList(newFileList.slice(-10)); // Limit to 10 files
   };
 
   return (
@@ -100,32 +84,21 @@ const CreateProducts = () => {
       </div>
       <Form
         {...formItemLayout}
-        variant="filled"
-        onFinish={handleSubmit}
         form={form}
+        onFinish={handleSubmit}
       >
         <Form.Item
           label="Product Name"
           name="name"
-          rules={[
-            {
-              required: true,
-              message: "Please enter product name!",
-            },
-          ]}
+          rules={[{ required: true, message: "Please enter product name!" }]}
         >
           <Input />
         </Form.Item>
 
         <Form.Item
-          label="Product Desctiption"
+          label="Product Description"
           name="description"
-          rules={[
-            {
-              required: true,
-              message: "Please enter product desctiption!",
-            },
-          ]}
+          rules={[{ required: true, message: "Please enter product description!" }]}
         >
           <Input.TextArea />
         </Form.Item>
@@ -133,48 +106,26 @@ const CreateProducts = () => {
         <Form.Item
           label="Product Price"
           name="price"
-          rules={[
-            {
-              required: true,
-              message: "Please product price!",
-            },
-          ]}
+          rules={[{ required: true, message: "Please enter product price!" }]}
         >
-          <InputNumber
-            style={{
-              width: "100%",
-            }}
-          />
+          <InputNumber style={{ width: "100%" }} />
         </Form.Item>
 
         <Form.Item
-          label="Product color"
+          label="Product Color"
           name="color"
-          rules={[
-            {
-              required: true,
-              message: "Please enter product price!",
-            },
-          ]}
+          rules={[{ required: true, message: "Please enter product color!" }]}
         >
           <Mentions />
         </Form.Item>
 
         <Form.Item
-          label="Product brand"
+          label="Product Brand"
           name="brand"
-          rules={[
-            {
-              required: true,
-              message: "Please select product brand!",
-            },
-          ]}
+          rules={[{ required: true, message: "Please select product brand!" }]}
         >
           <Select
-            // defaultValue={allBrands[0].name}
-            style={{
-              width: "100%",
-            }}
+            style={{ width: "100%" }}
             allowClear
           >
             {allBrands.map((brand) => (
@@ -188,18 +139,10 @@ const CreateProducts = () => {
         <Form.Item
           label="Product Category"
           name="category"
-          rules={[
-            {
-              required: true,
-              message: "Please select product category!",
-            },
-          ]}
+          rules={[{ required: true, message: "Please select product category!" }]}
         >
           <Select
-            // defaultValue={allBrands[0].name}
-            style={{
-              width: "100%",
-            }}
+            style={{ width: "100%" }}
             allowClear
           >
             {productCategories
@@ -215,12 +158,7 @@ const CreateProducts = () => {
         <Form.Item
           label="Product Images"
           name="images"
-          rules={[
-            {
-              required: true,
-              message: "Please upload product images!",
-            },
-          ]}
+          rules={[{ required: true, message: "Please upload product images!" }]}
         >
           <Upload
             listType="picture"
@@ -232,12 +170,7 @@ const CreateProducts = () => {
           </Upload>
         </Form.Item>
 
-        <Form.Item
-          wrapperCol={{
-            offset: 6,
-            span: 16,
-          }}
-        >
+        <Form.Item wrapperCol={{ offset: 6, span: 16 }}>
           <Button type="primary" htmlType="submit">
             Submit
           </Button>

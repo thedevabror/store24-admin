@@ -13,6 +13,10 @@ const AuthService = {
     const { data } = await api.get(`admin/users`);
     return data;
   },
+  async getUsersById(id) {
+    const { data } = await api.get(`users/${id}`);
+    return data;
+  },
 };
 
-export default AuthService
+export default AuthService;

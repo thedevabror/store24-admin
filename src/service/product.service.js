@@ -21,6 +21,14 @@ const ProductService = {
     const { data } = await api.post(`admin/products`, formData);
     return data;
   },
+  async deleteProduct(id) {
+    const { data } = await api.delete(`admin/products/${id}`);
+    return data;
+  },
+  async getSingleProduct(id) {
+    const { data } = await api.get(`products/${id}`);
+    return data;
+  },
 };
 
 export default ProductService;

@@ -25,6 +25,20 @@ const Product = () => {
     getProducts();
   }, [allProducts, dispatch]);
 
+  // const handleDelete = async (item) => {
+  //   // console.log(item);
+  //   const id = item._id
+  //   console.log(id)
+  //   try {
+  //     const deleteProduct = await ProductService.deleteProduct(id);
+  //     console.log(deleteProduct);
+  //     const response = await ProductService.getProducts();
+  //     dispatch(getProductSucces(response));
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
   return (
     <div className="">
       <div className="flex justify-between items-center mb-4">
@@ -38,13 +52,15 @@ const Product = () => {
       </div>
       <div className="grid min-[400px]:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 2xl:grid-cols-8 gap-5">
         {allProducts?.map((item) => (
-          <div
+          <Link
+          to={`${item._id}`}
             key={item._id}
             className="relative transition-all duration-300  hover:shadow hover:bg-white rounded-lg overflow-hidden"
+            // onClick={() => handleDelete(item)}
           >
             <div className="product-img overflow-hidden">
               <img
-                src={`http://143.110.239.160:5000/uploads/${
+                src={`http://localhost:5000/uploads/${
                   item.images.length !== 0
                     ? item.images[0].slice(8)
                     : "assets/product-2.jpg"
@@ -72,7 +88,7 @@ const Product = () => {
                 <p className="text-[14px]">${item.price}</p>
               </div>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>
