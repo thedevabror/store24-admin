@@ -13,6 +13,10 @@ const OrderService = {
     const { data } = await api.delete(`orders/${orderId}`);
     return data;
   },
+  async updateOrderStatus(order) {
+    const { data } = await api.put(`orders/update-order-status`, order);
+    return data;
+  },
 };
 
 export default OrderService;

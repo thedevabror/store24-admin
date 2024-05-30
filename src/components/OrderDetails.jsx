@@ -8,6 +8,7 @@ import {
   getSingleOrderSucces,
 } from "../app/slice/order";
 import { Loading } from "../utils/svg";
+import { Spin } from "antd";
 
 const OrderDetails = () => {
   const { id } = useParams();
@@ -33,7 +34,7 @@ const OrderDetails = () => {
     <>
       {isLoading ? (
         <div className="flex items-center justify-center h-full">
-          <Loading />
+          <Spin size="large" />
         </div>
       ) : (
         <div className="py-14 px-4 md:px-6 2xl:px-20 2xl:container 2xl:mx-auto">
@@ -51,49 +52,47 @@ const OrderDetails = () => {
                 <p className="text-lg md:text-xl font-semibold leading-6 xl:leading-5 text-gray-800">
                   Customer’s Cart
                 </p>
-                <div className="mt-4 md:mt-6 flex  flex-col justify-start items-start md:items-center md:space-x-6 xl:space-x-8 w-full ">
+                <div className="mt-4 md:mt-6 flex  flex-col justify-start items-start gap-5 md:items-center w-full ">
                   {singleOrder?.products?.map((item) => (
-                    <div className="border-b border-gray-200 md:flex-row flex-col flex justify-between items-center w-full gap-5  pb-8 space-y-4 md:space-y-0">
+                    <div className="border-b pb-3 md:flex-row flex-col flex justify-between items- w-full gap-5">
                       <div className="w-full md:w-60">
-                        {/* <img
-                          className="w-full"
-                          src={`https://abrorkhandev.uz/public/${item?.images[0].slice(
+                        <img
+                          className="w-full rounded-md"
+                          src={`https://abrorkhandev.uz/public/${item?.productId?.images[0].slice(
                             8
                           )}`}
                           alt="dress"
-                        /> */}
+                        />
                       </div>
                       <div className="w-full flex flex-col justify-start items-start space-y-8">
                         <h3 className="text-xl xl:text-2xl font-semibold leading-6 text-gray-800">
-                          Premium Quaility Dress
+                          {item.productId.name}
                         </h3>
-                        <div className="flex justify-start items-start flex-col space-y-2">
-                          <p className="text-sm leading-none text-gray-800">
-                            <span className="text-gray-300">Style: </span>{" "}
-                            Italic Minimal Design
-                          </p>
-                          <p className="text-sm leading-none text-gray-800">
-                            <span className="text-gray-300">Size: </span> Small
-                          </p>
-                          <p className="text-sm leading-none text-gray-800">
-                            <span className="text-gray-300">Color: </span> Light
-                            Blue
-                          </p>
-                        </div>
+                        <p>Created at: {singleOrder.createdAt}</p>
+                        <p>
+                          Status:{" "}
+                          <span
+                            className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                              singleOrder.status === "pending"
+                                ? "bg-yellow-100 text-yellow-500"
+                                : singleOrder.status === "completed"
+                                ? "bg-green-100 text-green-800"
+                                : "bg-red-100 text-red-800"
+                            }`}
+                          >
+                            {singleOrder.status}
+                          </span>
+                        </p>
                       </div>
                       <div className="flex justify-between space-x-8 items-start w-full">
                         <p className="text-base xl:text-lg leading-6">
-                          $36.00{" "}
-                          <span className="text-red-300 line-through">
-                            {" "}
-                            $45.00
-                          </span>
+                          ${item.productId.price}
                         </p>
                         <p className="text-base xl:text-lg leading-6 text-gray-800">
-                          01
+                          {item.quantity}
                         </p>
                         <p className="text-base xl:text-lg font-semibold leading-6 text-gray-800">
-                          $36.00
+                          ${singleOrder.totalPrice}
                         </p>
                       </div>
                     </div>
