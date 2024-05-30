@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { IoMdHeartEmpty } from "react-icons/io";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { HiMiniStar } from "react-icons/hi2";
 import { useDispatch, useSelector } from "react-redux";
 // import ProductService from "../services/product.service";
-import { getProductSucces, getSingleProductSucces } from "../app/slice/products";
+import {
+  getProductSucces,
+  getSingleProductSucces,
+} from "../app/slice/products";
 import ProductService from "../service/product.service";
 import { Button, Modal } from "antd";
 import { BiEdit } from "react-icons/bi";
 
 const ProductDetails = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { singleProduct } = useSelector((state) => state.productCategory);
   const { id } = useParams();
   useEffect(() => {
@@ -24,21 +26,20 @@ const ProductDetails = () => {
       }
     };
     getProduct();
-  }, []);
+  }, [dispatch, id]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
     setIsModalOpen(true);
   };
   const handleOk = async (singleProduct) => {
-    const id = singleProduct._id;
     try {
-      const deleteProduct = await ProductService.deleteProduct(id);
-    //   console.log(deleteProduct);
+      const res = await ProductService.deleteProduct(singleProduct._id)
       const response = await ProductService.getProducts();
       dispatch(getProductSucces(response));
       setIsModalOpen(false);
-      navigate("/dashboard/product")
+      navigate("/dashboard/product");
+      console.log(res)
     } catch (error) {
       console.log(error);
     }
@@ -49,13 +50,13 @@ const ProductDetails = () => {
 
   return (
     <>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 py-10 px-5 2xl:px-10">
-        <div className="flex flex-col sm:flex-row gap-5">
+      <div className="grid grid-cols-1 justify-center min-[1210px]:grid-cols-2 gap-5 py-10 px-5 2xl:px-10">
+        <div className="flex flex-col md:flex-row gap-5 max-[1210px]:justify-center">
           <div className="h-[100px] grid grid-cols-1 gap-5">
             {singleProduct?.images?.map((img, index) => (
               <img
                 key={index}
-                src={`http://localhost:5000/uploads/${img.slice(8)}`}
+                src={`https://abrorkhandev.uz/public/${img.slice(8)}`}
                 className="h-[100px] rounded-md"
                 alt=""
               />
@@ -63,7 +64,7 @@ const ProductDetails = () => {
           </div>
           {singleProduct?.images && singleProduct.images.length > 0 && (
             <img
-              src={`http://localhost:5000/uploads/${
+              src={`https://abrorkhandev.uz/public/${
                 singleProduct.images.length !== 0
                   ? singleProduct.images[0].slice(8)
                   : "assets/product-2.jpg"
@@ -162,7 +163,7 @@ const ProductDetails = () => {
           centered
         ></Modal>
         <Button type="default">
-          <BiEdit />
+          <Link to={`/dashboard/product/edit/${singleProduct._id}`}>Edit</Link>
         </Button>
       </div>
     </>

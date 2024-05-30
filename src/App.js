@@ -21,6 +21,7 @@ import CreateProducts from "./components/CreateProducts";
 import Categories from "./components/Categories";
 import CreateCategry from "./components/CreateCategry";
 import ProductDetails from "./components/ProductDetails";
+import EditProduct from "./components/EditProduct";
 // import PrivateRoute from "./PrivateRoute";
 
 const App = () => {
@@ -49,6 +50,7 @@ const App = () => {
               <Route path="user" element={<User />} />
               <Route path="product" element={<Product />} />
               <Route path="product/:id" element={<ProductDetails />} />
+              <Route path="product/edit/:id" element={<EditProduct />} />
               <Route path="blog" element={<Blog />} />
               <Route path="orders" element={<Orders />} />
               <Route path="categories" element={<Categories />} />

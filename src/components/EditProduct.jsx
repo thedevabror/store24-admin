@@ -22,8 +22,9 @@ import {
   getCategoryFailur,
   getCategoryStart,
   getCategorySucces,
+  getSingleProductSucces,
 } from "../app/slice/products";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const { Option } = Select;
 const formItemLayout = {
@@ -37,14 +38,16 @@ const formItemLayout = {
   },
 };
 
-const CreateProducts = () => {
+const EditProduct = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { allBrands } = useSelector((state) => state.productCategory);
   const { productCategories } = useSelector((state) => state.productCategory);
-  const [attributes, setAttributes] = useState([{ name: "", value: "" }]);
   const [form] = Form.useForm();
   const [fileList, setFileList] = useState([]);
+  const [attributes, setAttributes] = useState([{ name: "", value: "" }]);
+  const { singleProduct } = useSelector((state) => state.productCategory);
+  const { id } = useParams();
 
   useEffect(() => {
     const getCatBrands = async () => {
@@ -61,7 +64,30 @@ const CreateProducts = () => {
       }
     };
     getCatBrands();
-  }, [dispatch]);
+
+    const getProduct = async () => {
+      const res = await ProductService.getSingleProduct(id);
+      try {
+        dispatch(getSingleProductSucces(res));
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getProduct();
+  }, [dispatch, id]);
+
+  useEffect(() => {
+    if (singleProduct) {
+      form.setFieldsValue({
+        name: singleProduct.name,
+        description: singleProduct.description,
+        price: singleProduct.price,
+        color: singleProduct.color,
+        brand: singleProduct.brand, // brand ID
+        category: singleProduct.category._id, // category ID
+      });
+    }
+  }, [singleProduct, form]);
 
   const handleSubmit = async (values) => {
     const formData = new FormData();
@@ -77,8 +103,10 @@ const CreateProducts = () => {
       formData.append("images", file.originFileObj);
     });
 
+    const id = singleProduct._id;
+
     try {
-      const response = await ProductService.createProduct(formData);
+      const response = await ProductService.editProduct(id, formData);
       console.log(response);
       navigate("/dashboard/product");
     } catch (error) {
@@ -109,7 +137,7 @@ const CreateProducts = () => {
   return (
     <div className="p-6">
       <div>
-        <h1 className="text-2xl font-semibold">Create Product</h1>
+        <h1 className="text-2xl font-semibold">Edit Product</h1>
       </div>
       <Form {...formItemLayout} form={form} onFinish={handleSubmit}>
         <Form.Item
@@ -145,7 +173,6 @@ const CreateProducts = () => {
         >
           <Mentions />
         </Form.Item>
-
         <Form.Item label="Product Attributes">
           {attributes.map((attribute, index) => (
             <div key={index} style={{ display: "flex", marginBottom: 8 }}>
@@ -222,7 +249,7 @@ const CreateProducts = () => {
 
         <Form.Item wrapperCol={{ offset: 6, span: 16 }}>
           <Button type="primary" htmlType="submit">
-            Submit
+            Save
           </Button>
         </Form.Item>
       </Form>
@@ -230,4 +257,4 @@ const CreateProducts = () => {
   );
 };
 
-export default CreateProducts;
+export default EditProduct;

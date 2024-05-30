@@ -32,6 +32,7 @@ const CreateCategry = () => {
   const handleSubmit = async (values) => {
     try {
       const response = await ProductService.createCategory(values);
+      console.log(response)
       navigate("/dashboard/categories");
     } catch (error) {
       console.log(error);

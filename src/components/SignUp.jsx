@@ -28,12 +28,10 @@ const SignUp = () => {
     try {
       const response = await AuthService.adminRegister(user);
       dispatch(logInUserSuccess(response));
-      console.log(response);
       navigate("/dashboard");
       login();
     } catch (error) {
       dispatch(logInUserFailure(error));
-      console.log(error);
     }
   };
   return (

@@ -29,6 +29,10 @@ const ProductService = {
     const { data } = await api.get(`products/${id}`);
     return data;
   },
+  async editProduct(id, formData) {
+    const { data } = await api.put(`admin/products/${id}`, formData);
+    return data
+  },
 };
 
 export default ProductService;

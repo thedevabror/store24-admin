@@ -12,16 +12,29 @@ import AuthService from "../service/auth.service";
 const Orders = () => {
   const dispatch = useDispatch();
   const { allOrders } = useSelector((state) => state.orders);
-  const [id, setId] = useState();
-  const [user, setUser] = useState();
+  const [userDetails, setUserDetails] = useState({});
+
   useEffect(() => {
     const getOrders = async () => {
       dispatch(getOrdersStart());
       try {
         const response = await OrderService.getOrders();
         dispatch(getOrdersSucces(response));
-        const res = await AuthService.getUsersById(id);
-        console.log(res);
+
+        // Fetch user details for each order
+        const userIds = response.map((order) => order.userId);
+        const uniqueUserIds = [...new Set(userIds)];
+        const userDetailsPromises = uniqueUserIds.map((id) =>
+          AuthService.getUsersById(id)
+        );
+        const userDetailsArray = await Promise.all(userDetailsPromises);
+
+        const userDetailsMap = userDetailsArray.reduce((acc, user) => {
+          acc[user.id] = user;
+          return acc;
+        }, {});
+
+        setUserDetails(userDetailsMap);
       } catch (error) {
         dispatch(getOrdersFailur());
         console.log(error);
@@ -29,7 +42,7 @@ const Orders = () => {
     };
 
     getOrders();
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="p-2">
@@ -44,10 +57,10 @@ const Orders = () => {
       </div>
       <div className="p-4 border rounded-md grid grid-cols-4 gap-2">
         {allOrders.map((item) => {
-          // setId(item.userId);
+          const user = userDetails[item.userId];
           return (
             <div className="p-4 border rounded-md" key={item._id}>
-              <h1>Order by: {item.userId}</h1>
+              <h1>Order by: {user ? user.name : item.userId}</h1>
               <h1>
                 Status:{" "}
                 <span
@@ -63,10 +76,8 @@ const Orders = () => {
                 </span>
               </h1>
               <div>
-                {item.products.map((orders) => (
-                  <>
-                    <h1>Products quantity: {orders.quantity}</h1>
-                  </>
+                {item.products.map((orders, index) => (
+                  <h1 key={index}>Products quantity: {orders.quantity}</h1>
                 ))}
               </div>
             </div>
