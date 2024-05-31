@@ -7,15 +7,15 @@ import {
   getSingleOrderStart,
   getSingleOrderSucces,
 } from "../app/slice/order";
-import { Loading } from "../utils/svg";
 import { Spin } from "antd";
 
 const OrderDetails = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const { isLoading, singleOrder } = useSelector((state) => state.orders);
+
   useEffect(() => {
-    const getOreder = async () => {
+    const getOrder = async () => {
       dispatch(getSingleOrderStart());
       try {
         const response = await OrderService.getOrderById(id);
@@ -27,16 +27,20 @@ const OrderDetails = () => {
       }
     };
 
-    getOreder();
-  }, []);
+    getOrder();
+  }, [dispatch, id]);
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-full">
+        <Spin size="large" />
+      </div>
+    );
+  }
 
   return (
     <>
-      {isLoading ? (
-        <div className="flex items-center justify-center h-full">
-          <Spin size="large" />
-        </div>
-      ) : (
+      {singleOrder && Object.keys(singleOrder).length > 0 ? (
         <div className="py-14 px-4 md:px-6 2xl:px-20 2xl:container 2xl:mx-auto">
           <div className="flex justify-start item-start space-y-2 flex-col ">
             <h1 className="text-3xl lg:text-4xl font-semibold leading-7 lg:leading-9  text-gray-800">
@@ -50,11 +54,14 @@ const OrderDetails = () => {
             <div className="flex flex-col justify-start items-start w-full space-y-4 md:space-y-6 xl:space-y-8">
               <div className="flex flex-col justify-start items-start bg-gray-50 px-4 py-4 md:py-6 md:p-6 xl:p-8 w-full">
                 <p className="text-lg md:text-xl font-semibold leading-6 xl:leading-5 text-gray-800">
-                  Customer’s Cart
+                  Mijozning buyurtmalari
                 </p>
                 <div className="mt-4 md:mt-6 flex  flex-col justify-start items-start gap-5 md:items-center w-full ">
                   {singleOrder?.products?.map((item) => (
-                    <div className="border-b pb-3 md:flex-row flex-col flex justify-between items- w-full gap-5">
+                    <div
+                      className="border-b pb-3 md:flex-row flex-col flex justify-between items- w-full gap-5"
+                      key={item.productId._id}
+                    >
                       <div className="w-full md:w-60">
                         <img
                           className="w-full rounded-md"
@@ -146,9 +153,9 @@ const OrderDetails = () => {
                   </h3>
                   <div className="flex justify-between items-start w-full">
                     <div className="flex justify-center items-center space-x-4">
-                      <div class="w-8 h-8">
+                      <div className="w-8 h-8">
                         <img
-                          class="w-full h-full"
+                          className="w-full h-full"
                           alt="logo"
                           src="https://i.ibb.co/L8KSdNQ/image-3.png"
                         />
@@ -158,7 +165,7 @@ const OrderDetails = () => {
                           DPD Delivery
                           <br />
                           <span className="font-normal">
-                            Delivery with 24 Hours
+                            Delivery within 24 Hours
                           </span>
                         </p>
                       </div>
@@ -250,6 +257,10 @@ const OrderDetails = () => {
               </div>
             </div>
           </div>
+        </div>
+      ) : (
+        <div className="flex items-center justify-center h-full">
+          <h1 className="text-xl">Buyurtma topilmadi :(</h1>
         </div>
       )}
     </>
