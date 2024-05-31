@@ -119,26 +119,26 @@ const Orders = () => {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-full">
+        <Spin size="large" />
+      </div>
+    );
+  }
+
   return (
     <div className="p-2">
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-semibold">Buyurtmalar</h1>
-        <Link
-          to={"create"}
-          className="bg-blue-600 text-white px-4 py-2 rounded-md"
-        >
-          + New Order
-        </Link>
-      </div>
-      {loading ? (
-        <div className="flex items-center justify-center h-full">
-          <Spin size="large" />
+      <div>
+        <div className="flex justify-between items-center mb-4">
+          <h1 className="text-2xl font-semibold">Buyurtmalar</h1>
+          <Link
+            to={"create"}
+            className="bg-blue-600 text-white px-4 py-2 rounded-md"
+          >
+            + New Order
+          </Link>
         </div>
-      ) : allOrders?.length === 0 ? (
-        <div className="flex items-center justify-center h-full">
-          <Empty description={"Buyurtmalar yo'q"} />
-        </div>
-      ) : (
         <div className="p-4 border rounded-md grid grid-cols-4 gap-2">
           {allOrders?.map((item) => {
             const user = userDetails[item.userId];
@@ -169,7 +169,7 @@ const Orders = () => {
                     ))}
                   </div>
                 </Link>
-                <div className="absolute top-16 right-2 group-hover:opacity-100 transition-opacity duration-200">
+                <div className="absolute top-[70%] right-2 group-hover:opacity-100 transition-opacity duration-200">
                   <Button
                     icon={<EditOutlined />}
                     onClick={() => handleEdit(item._id)}
@@ -185,7 +185,7 @@ const Orders = () => {
             );
           })}
         </div>
-      )}
+      </div>
       <Modal
         title="Edit Order"
         open={isModalOpen}
