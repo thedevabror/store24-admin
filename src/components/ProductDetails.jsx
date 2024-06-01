@@ -5,21 +5,25 @@ import { useDispatch, useSelector } from "react-redux";
 // import ProductService from "../services/product.service";
 import {
   getProductSucces,
+  getSingleProductStart,
   getSingleProductSucces,
 } from "../app/slice/products";
 import ProductService from "../service/product.service";
-import { Button, Modal } from "antd";
+import { Button, Modal, Spin } from "antd";
 import { BiEdit } from "react-icons/bi";
 
 const ProductDetails = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { singleProduct } = useSelector((state) => state.productCategory);
+  const { isLoading, singleProduct } = useSelector(
+    (state) => state.productCategory
+  );
   const { id } = useParams();
   useEffect(() => {
     const getProduct = async () => {
-      const res = await ProductService.getSingleProduct(id);
+      dispatch(getSingleProductStart());
       try {
+        const res = await ProductService.getSingleProduct(id);
         dispatch(getSingleProductSucces(res));
       } catch (error) {
         console.log(error);
@@ -34,12 +38,12 @@ const ProductDetails = () => {
   };
   const handleOk = async (singleProduct) => {
     try {
-      const res = await ProductService.deleteProduct(singleProduct._id)
+      const res = await ProductService.deleteProduct(singleProduct._id);
       const response = await ProductService.getProducts();
       dispatch(getProductSucces(response));
       setIsModalOpen(false);
       navigate("/dashboard/product");
-      console.log(res)
+      console.log(res);
     } catch (error) {
       console.log(error);
     }
@@ -47,6 +51,14 @@ const ProductDetails = () => {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-full">
+        <Spin size="large" />
+      </div>
+    );
+  }
 
   return (
     <>
@@ -122,12 +134,7 @@ const ProductDetails = () => {
           <hr />
           <div className="flex items-center gap-10">
             <div>Ranglari:</div>
-            {/* {color?.map((color) => {
-              // console.log(color?.title)
-              return ( */}
             <div className={`bg-[#000] p-5 rounded-md shadow-md`}></div>
-            {/* ); */}
-            {/* })} */}
           </div>
           <div className="">
             <p>
@@ -140,7 +147,7 @@ const ProductDetails = () => {
             <h1 className="section-heading">${singleProduct?.price}</h1>
           </div>
           <div className="flex flex-col gap-2">
-            <p className="mr-10">Mahsulot haqida qisqacha:</p>
+            <p className="mr-10 font-bold">Mahsulot haqida qisqacha:</p>
             <div
               dangerouslySetInnerHTML={{ __html: singleProduct?.description }}
               className="list-disc"

@@ -23,6 +23,7 @@ import CreateCategry from "./components/CreateCategry";
 import ProductDetails from "./components/ProductDetails";
 import EditProduct from "./components/EditProduct";
 import OrderDetails from "./components/OrderDetails";
+import OrderCreate from "./components/OrderCreate";
 // import PrivateRoute from "./PrivateRoute";
 
 const App = () => {
@@ -55,6 +56,7 @@ const App = () => {
               <Route path="blog" element={<Blog />} />
               <Route path="orders" element={<Orders />} />
               <Route path="orders/:id" element={<OrderDetails />} />
+              {/* <Route path="orders/create" element={<OrderCreate />} /> */}
               <Route path="categories" element={<Categories />} />
               <Route path="categories/create" element={<CreateCategry />} />
               <Route path="product/create" element={<CreateProducts />} />

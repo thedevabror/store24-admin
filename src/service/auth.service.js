@@ -13,8 +13,8 @@ const AuthService = {
     const { data } = await api.get(`admin/users`);
     return data;
   },
-  async getUsersById(id) {
-    const { data } = await api.get(`users/${id}`);
+  async getUsersById(userId) {
+    const { data } = await api.get(`users/${userId}`);
     return data;
   },
 };

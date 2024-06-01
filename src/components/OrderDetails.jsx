@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import OrderService from "../service/order.service";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -8,10 +8,12 @@ import {
   getSingleOrderSucces,
 } from "../app/slice/order";
 import { Spin } from "antd";
+import AuthService from "../service/auth.service";
 
 const OrderDetails = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
+  const [user, setUser] = useState({});
   const { isLoading, singleOrder } = useSelector((state) => state.orders);
 
   useEffect(() => {
@@ -28,6 +30,19 @@ const OrderDetails = () => {
     };
 
     getOrder();
+
+    const getUser = async () => {
+      // dispatch(getUs)
+      try {
+        const response = await AuthService.getUsersById(singleOrder.userId);
+        // console.log(response);
+        setUser(response);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getUser();
   }, [dispatch, id]);
 
   if (isLoading) {
@@ -44,10 +59,10 @@ const OrderDetails = () => {
         <div className="py-14 px-4 md:px-6 2xl:px-20 2xl:container 2xl:mx-auto">
           <div className="flex justify-start item-start space-y-2 flex-col ">
             <h1 className="text-3xl lg:text-4xl font-semibold leading-7 lg:leading-9  text-gray-800">
-              Order #13432
+              Order 
             </h1>
             <p className="text-base font-medium leading-6 text-gray-600">
-              21st Mart 2021 at 10:34 PM
+              {singleOrder.createdAt}
             </p>
           </div>
           <div className="mt-10 flex flex-col xl:flex-row jusitfy-center items-stretch  w-full xl:space-x-8 space-y-4 md:space-y-6 xl:space-y-0">
@@ -71,32 +86,17 @@ const OrderDetails = () => {
                           alt="dress"
                         />
                       </div>
-                      <div className="w-full flex flex-col justify-start items-start space-y-8">
+                      <Link to={`/dashboard/product/${item.productId._id}`} className="w-full flex flex-col justify-start items-start space-y-8">
                         <h3 className="text-xl xl:text-2xl font-semibold leading-6 text-gray-800">
                           {item.productId.name}
                         </h3>
-                        <p>Created at: {singleOrder.createdAt}</p>
-                        <p>
-                          Status:{" "}
-                          <span
-                            className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                              singleOrder.status === "pending"
-                                ? "bg-yellow-100 text-yellow-500"
-                                : singleOrder.status === "completed"
-                                ? "bg-green-100 text-green-800"
-                                : "bg-red-100 text-red-800"
-                            }`}
-                          >
-                            {singleOrder.status}
-                          </span>
-                        </p>
-                      </div>
+                      </Link>
                       <div className="flex justify-between space-x-8 items-start w-full">
                         <p className="text-base xl:text-lg leading-6">
                           ${item.productId.price}
                         </p>
                         <p className="text-base xl:text-lg leading-6 text-gray-800">
-                          {item.quantity}
+                          {item.quantity} ta
                         </p>
                         <p className="text-base xl:text-lg font-semibold leading-6 text-gray-800">
                           ${singleOrder.totalPrice}
@@ -117,25 +117,14 @@ const OrderDetails = () => {
                         Subtotal
                       </p>
                       <p className="text-base leading-4 text-gray-600">
-                        $56.00
-                      </p>
-                    </div>
-                    <div className="flex justify-between items-center w-full">
-                      <p className="text-base leading-4 text-gray-800">
-                        Discount{" "}
-                        <span className="bg-gray-200 p-1 text-xs font-medium leading-3  text-gray-800">
-                          STUDENT
-                        </span>
-                      </p>
-                      <p className="text-base leading-4 text-gray-600">
-                        -$28.00 (50%)
+                        ${singleOrder.totalPrice}
                       </p>
                     </div>
                     <div className="flex justify-between items-center w-full">
                       <p className="text-base leading-4 text-gray-800">
                         Shipping
                       </p>
-                      <p className="text-base leading-4 text-gray-600">$8.00</p>
+                      <p className="text-base leading-4 text-gray-600">$3.00</p>
                     </div>
                   </div>
                   <div className="flex justify-between items-center w-full">
@@ -147,58 +136,22 @@ const OrderDetails = () => {
                     </p>
                   </div>
                 </div>
-                <div className="flex flex-col justify-center px-4 py-6 md:p-6 xl:p-8 w-full bg-gray-50 space-y-6   ">
-                  <h3 className="text-xl font-semibold leading-5 text-gray-800">
-                    Shipping
-                  </h3>
-                  <div className="flex justify-between items-start w-full">
-                    <div className="flex justify-center items-center space-x-4">
-                      <div className="w-8 h-8">
-                        <img
-                          className="w-full h-full"
-                          alt="logo"
-                          src="https://i.ibb.co/L8KSdNQ/image-3.png"
-                        />
-                      </div>
-                      <div className="flex flex-col justify-start items-center">
-                        <p className="text-lg leading-6 font-semibold text-gray-800">
-                          DPD Delivery
-                          <br />
-                          <span className="font-normal">
-                            Delivery within 24 Hours
-                          </span>
-                        </p>
-                      </div>
-                    </div>
-                    <p className="text-lg font-semibold leading-6 text-gray-800">
-                      $8.00
-                    </p>
-                  </div>
-                  <div className="w-full flex justify-center items-center">
-                    <button className="hover:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 py-5 w-96 md:w-full bg-gray-800 text-base font-medium leading-4 text-white">
-                      View Carrier Details
-                    </button>
-                  </div>
-                </div>
               </div>
             </div>
             <div className="bg-gray-50 w-full xl:w-96 flex justify-between items-center md:items-start px-4 py-6 md:p-6 xl:p-8 flex-col ">
               <h3 className="text-xl font-semibold leading-5 text-gray-800">
-                Customer
+                Mijoz
               </h3>
               <div className="flex  flex-col md:flex-row xl:flex-col justify-start items-stretch h-full w-full md:space-x-6 lg:space-x-8 xl:space-x-0 ">
                 <div className="flex flex-col justify-start items-start flex-shrink-0">
                   <div className="flex justify-center  w-full  md:justify-start items-center space-x-4 py-8 border-b border-gray-200">
-                    <img
+                    {/* <img
                       src="https://i.ibb.co/5TSg7f6/Rectangle-18.png"
                       alt="avatar"
-                    />
+                    /> */}
                     <div className=" flex justify-start items-start flex-col space-y-2">
                       <p className="text-base font-semibold leading-4 text-left text-gray-800">
-                        David Kent
-                      </p>
-                      <p className="text-sm leading-5 text-gray-600">
-                        10 Previous Orders
+                        {user.name}
                       </p>
                     </div>
                   </div>
@@ -225,7 +178,7 @@ const OrderDetails = () => {
                       />
                     </svg>
                     <p className="cursor-pointer text-sm leading-5 text-gray-800">
-                      david89@gmail.com
+                      {user.email}
                     </p>
                   </div>
                 </div>
@@ -233,25 +186,20 @@ const OrderDetails = () => {
                   <div className="flex justify-center md:justify-start xl:flex-col flex-col md:space-x-6 lg:space-x-8 xl:space-x-0 space-y-4 xl:space-y-12 md:space-y-0 md:flex-row  items-center md:items-start ">
                     <div className="flex justify-center md:justify-start  items-center md:items-start flex-col space-y-4 xl:mt-8">
                       <p className="text-base font-semibold leading-4 text-center md:text-left text-gray-800">
-                        Shipping Address
+                        Manzili
                       </p>
                       <p className="w-48 lg:w-full xl:w-48 text-center md:text-left text-sm leading-5 text-gray-600">
-                        180 North King Street, Northhampton MA 1060
+                        <h1>
+                          Ko'cha: <span>{user?.address?.street}</span>
+                        </h1>
+                        <h1>
+                          Shahar: <span>{user?.address?.city}</span>
+                        </h1>
+                        <h1>
+                          Davlat: <span>{user?.address?.state}</span>
+                        </h1>
                       </p>
                     </div>
-                    <div className="flex justify-center md:justify-start  items-center md:items-start flex-col space-y-4 ">
-                      <p className="text-base font-semibold leading-4 text-center md:text-left text-gray-800">
-                        Billing Address
-                      </p>
-                      <p className="w-48 lg:w-full xl:w-48 text-center md:text-left text-sm leading-5 text-gray-600">
-                        180 North King Street, Northhampton MA 1060
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex w-full justify-center items-center md:justify-start md:items-start">
-                    <button className="mt-6 md:mt-0 py-5 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 border border-gray-800 font-medium w-96 2xl:w-full text-base leading-4 text-gray-800">
-                      Edit Details
-                    </button>
                   </div>
                 </div>
               </div>

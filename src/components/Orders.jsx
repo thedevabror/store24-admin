@@ -43,8 +43,8 @@ const Orders = () => {
         // Fetch user details for each order
         const userIds = response.map((order) => order.userId);
         const uniqueUserIds = [...new Set(userIds)];
-        const userDetailsPromises = uniqueUserIds.map((id) =>
-          AuthService.getUsersById(id)
+        const userDetailsPromises = uniqueUserIds.map((userId) =>
+          AuthService.getUsersById(userId)
         );
         const userDetailsArray = await Promise.all(userDetailsPromises);
 
@@ -132,12 +132,6 @@ const Orders = () => {
       <div>
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-2xl font-semibold">Buyurtmalar</h1>
-          <Link
-            to={"create"}
-            className="bg-blue-600 text-white px-4 py-2 rounded-md"
-          >
-            + New Order
-          </Link>
         </div>
         <div className="p-4 border rounded-md grid grid-cols-4 gap-2">
           {allOrders?.map((item) => {

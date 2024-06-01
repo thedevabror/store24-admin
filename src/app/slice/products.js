@@ -58,7 +58,7 @@ export const productAndcategoriSlice = createSlice({
       state.isLoading = false;
       state.singleProduct = action.payload;
     },
-    getSingleProductSuccesFailur: (state) => {
+    getSingleProductFailur: (state) => {
       state.singleProductFailur = true;
     },
   },
@@ -76,7 +76,7 @@ export const {
   getBrandsFailur,
   getSingleProductStart,
   getSingleProductSucces,
-  getSingleProductSuccesFailur,
+  getSingleProductFailur,
 } = productAndcategoriSlice.actions;
 
 export default productAndcategoriSlice.reducer;
