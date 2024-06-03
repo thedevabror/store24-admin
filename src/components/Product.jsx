@@ -7,7 +7,7 @@ import {
   getProductSucces,
 } from "../app/slice/products";
 import { Link } from "react-router-dom";
-import { Empty } from "antd";
+import { Empty, message } from "antd";
 
 const Product = () => {
   const { allProducts } = useSelector((state) => state.productCategory);
@@ -19,6 +19,7 @@ const Product = () => {
         const response = await ProductService.getProducts();
         dispatch(getProductSucces(response));
       } catch (error) {
+        message.error("Xatolik, iltimos qayta urunib ko'ring!");
         dispatch(getProductFailur());
         console.log(error);
       }

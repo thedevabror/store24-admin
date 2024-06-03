@@ -1,77 +1,49 @@
 import React, { useEffect, useState } from "react";
 import { FaEllipsisV } from "react-icons/fa";
 import AuthService from "../service/auth.service";
-
-// const users = [
-//   {
-//     id: 1,
-//     name: "Alfonso O'Keefe",
-//     company: "Bahringer Group",
-//     role: "Project Manager",
-//     verified: "No",
-//     status: "Active",
-//     avatar: "https://via.placeholder.com/40",
-//   },
-//   {
-//     id: 2,
-//     name: "Amanda Roob",
-//     company: "Crooks, Prosacco and Bayer",
-//     role: "Hr Manager",
-//     verified: "No",
-//     status: "Active",
-//     avatar: "https://via.placeholder.com/40",
-//   },
-//   {
-//     id: 3,
-//     name: "Cassandra Wolf",
-//     company: "Schimmel - VonRueden",
-//     role: "UI/UX Designer",
-//     verified: "No",
-//     status: "Banned",
-//     avatar: "https://via.placeholder.com/40",
-//   },
-//   {
-//     id: 4,
-//     name: "Darnell VonRueden Sr.",
-//     company: "Pouros, MacGyver and Shields",
-//     role: "UI/UX Designer",
-//     verified: "Yes",
-//     status: "Active",
-//     avatar: "https://via.placeholder.com/40",
-//   },
-//   {
-//     id: 5,
-//     name: "Dr. Clifton McClure",
-//     company: "Crist Inc",
-//     role: "Full Stack Designer",
-//     verified: "Yes",
-//     status: "Active",
-//     avatar: "https://via.placeholder.com/40",
-//   },
-// ];
+import { Link } from "react-router-dom";
+import { Spin, message } from "antd";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserStart, getUserSucces } from "../app/slice/auth";
 
 const UserTable = () => {
+  const { isLoading } = useSelector((state) => state.auth);
+  const dispatch = useDispatch()
   const [users, setUsers] = useState([]);
   useEffect(() => {
     const getUsers = async () => {
+      dispatch(getUserStart())
       try {
         const response = await AuthService.getUsers();
         setUsers(response);
+        dispatch(getUserSucces())
       } catch (error) {
+        message.error("Xatolik, iltimos qayta urunib ko'ring!");
         console.log(error);
       }
     };
 
     getUsers();
-  }, []);
+  }, [dispatch]);
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-full">
+        <Spin size="large" />
+      </div>
+    );
+  }
 
   return (
-    <div className="">
+    <div>
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-semibold">Users</h1>
-        <button className="bg-blue-600 text-white px-4 py-2 rounded-md">
-          + New User
-        </button>
+        <h1 className="text-2xl font-semibold">Mijozlar</h1>
+        <Link
+          to={"/dashboard/create/user"}
+          className="bg-blue-600 text-white px-4 py-2 rounded-md"
+        >
+          + Yangi mijoz
+        </Link>
       </div>
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white">
@@ -81,19 +53,16 @@ const UserTable = () => {
                 <input type="checkbox" />
               </th>
               <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-600 uppercase tracking-wider">
-                Name
+                Ismi
               </th>
               <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-600 uppercase tracking-wider">
                 Email
               </th>
               <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-600 uppercase tracking-wider">
-                Role
+                Vazifasi
               </th>
               <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-600 uppercase tracking-wider">
-                Verified
-              </th>
-              <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-600 uppercase tracking-wider">
-                Status
+                Holati
               </th>
               <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-600 uppercase tracking-wider"></th>
             </tr>
@@ -105,12 +74,10 @@ const UserTable = () => {
                   <input type="checkbox" />
                 </td>
                 <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                  <div className="flex items-center">
-                    <img
-                      src={user.avatar}
-                      alt="avatar"
-                      className="w-10 h-10 rounded-full mr-4"
-                    />
+                  <div className="flex items-center ">
+                    <span className="w-10 h-10 rounded-full mr-4 text-center flex items-center justify-center text-2xl font-bold border">
+                      {user.name.slice(0, 1)}
+                    </span>
                     <div>
                       <div className="text-sm leading-5 font-medium text-gray-900">
                         {user.name}
@@ -129,11 +96,6 @@ const UserTable = () => {
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                  <div className="text-sm leading-5 text-gray-900">
-                    {user.verified}
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                   <span
                     className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                       user.isActive
@@ -141,7 +103,7 @@ const UserTable = () => {
                         : "bg-red-100 text-red-800"
                     }`}
                   >
-                    {user.isActive ? "Active" : "Blocked"}
+                    {user.isActive ? "Faol" : "Bloklangan"}
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 font-medium">

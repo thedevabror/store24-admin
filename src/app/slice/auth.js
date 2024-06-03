@@ -10,7 +10,7 @@ const initialState = {
   loginUserSucces: false,
   loginUserFailur: false,
   userData: {},
-  userName: '',
+  userName: "",
   error: null,
 };
 
@@ -31,8 +31,8 @@ export const authSlice = createSlice({
       state.logined = true;
       sessionStorage.setItem("token", action.payload.token);
       sessionStorage.setItem("logined", state.logined);
-      sessionStorage.setItem("username", state.userData.name); 
-      sessionStorage.setItem("id", state.userData._id)
+      sessionStorage.setItem("username", state.userData.name);
+      sessionStorage.setItem("id", state.userData._id);
     },
     signUserFailure: (state, action) => {
       state.isLoading = false;
@@ -54,13 +54,22 @@ export const authSlice = createSlice({
       sessionStorage.setItem("token", action.payload.token);
       sessionStorage.setItem("logined", state.logined);
       sessionStorage.setItem("username", state.userData.name);
-      sessionStorage.setItem("id", state.userData._id)
+      sessionStorage.setItem("id", state.userData._id);
     },
     logInUserFailure: (state, action) => {
       state.isLoading = false;
       state.logined = false;
       state.loginUserFailur = true;
       state.error = action.payload;
+    },
+    getUserStart: (state) => {
+      state.isLoading = true;
+    },
+    getUserSucces: (state) => {
+      state.isLoading = false;
+    },
+    getUserFailure: (state) => {
+      state.isLoading = false;
     },
   },
 });
@@ -72,5 +81,8 @@ export const {
   logInUserStart,
   logInUserSuccess,
   logInUserFailure,
+  getUserStart,
+  getUserSucces,
+  getUserFailure,
 } = authSlice.actions;
 export default authSlice.reducer;

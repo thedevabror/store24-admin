@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { List, Button, message, Empty, Modal, Select, Form, Spin } from "antd";
+import {  Button, message, Modal, Select, Form, Spin } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import OrderService from "../service/order.service";
 import AuthService from "../service/auth.service";
@@ -56,7 +56,7 @@ const Orders = () => {
         setUserDetails(userDetailsMap);
       } catch (error) {
         dispatch(getOrdersFailur());
-        message.error("Failed to fetch orders");
+        message.error("Xatolik, iltimos qayta urunib ko'ring!");
         console.error(error);
       } finally {
         setLoading(false);
