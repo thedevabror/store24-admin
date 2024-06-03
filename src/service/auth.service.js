@@ -17,6 +17,10 @@ const AuthService = {
     const { data } = await api.get(`users/${userId}`);
     return data;
   },
+  async createUser(values) {
+    const { data } = await api.post(`users/register`, values);
+    return data
+  }
 };
 
 export default AuthService;

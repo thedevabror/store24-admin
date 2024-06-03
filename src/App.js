@@ -24,6 +24,8 @@ import ProductDetails from "./components/ProductDetails";
 import EditProduct from "./components/EditProduct";
 import OrderDetails from "./components/OrderDetails";
 import OrderCreate from "./components/OrderCreate";
+import Create from "./components/Create";
+import { CreateLinks } from "./data";
 // import PrivateRoute from "./PrivateRoute";
 
 const App = () => {
@@ -53,6 +55,10 @@ const App = () => {
               <Route path="product" element={<Product />} />
               <Route path="product/:id" element={<ProductDetails />} />
               <Route path="product/edit/:id" element={<EditProduct />} />
+              <Route path="create" element={<Create />} />
+              {CreateLinks.map((item) => (
+                <Route key={item.id} path={`create/${item.link}`} element={item.element} />
+              ))}
               <Route path="blog" element={<Blog />} />
               <Route path="orders" element={<Orders />} />
               <Route path="orders/:id" element={<OrderDetails />} />
