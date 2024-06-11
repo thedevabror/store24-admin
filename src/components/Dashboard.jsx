@@ -1,8 +1,22 @@
-import React from 'react';
+import React, { useEffect } from "react";
+import ProductService from "../service/product.service";
 
 const Dashboard = () => {
+  useEffect(() => {
+    const getTopSellingProducts = async () => {
+      try {
+        const response = await ProductService.getTopSellingProducts();
+        console.log(response);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getTopSellingProducts()
+  }, []);
+
   return (
-    <div className="px-10 bg-gray-100">
+    <div className="md:px-10 bg-gray-100">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <div className="bg-white shadow rounded-lg p-6">
           <h2 className="text-lg font-semibold">714k</h2>
@@ -23,7 +37,6 @@ const Dashboard = () => {
       </div>
       <div className="mt-6 bg-white shadow rounded-lg p-6">
         <h2 className="text-lg font-semibold mb-4">Website Visits</h2>
-        {/* Your chart component goes here */}
       </div>
     </div>
   );

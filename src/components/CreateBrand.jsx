@@ -1,9 +1,84 @@
-import React from 'react'
+import { Button, Form, Input } from "antd";
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
+import ProductService from "../service/product.service";
+
+const formItemLayout = {
+  labelCol: {
+    xs: {
+      span: 24,
+    },
+    sm: {
+      span: 6,
+    },
+  },
+  wrapperCol: {
+    xs: {
+      span: 24,
+    },
+    sm: {
+      span: 14,
+    },
+  },
+};
 
 const CreateBrand = () => {
-  return (
-    <div>CreateBrand</div>
-  )
-}
+  const [form] = Form.useForm();
+  const navigate = useNavigate();
 
-export default CreateBrand
+
+  const handleSubmit = async (values) => {
+    try {
+      const response = await ProductService.createBrand(values);
+      console.log(response);
+      navigate("/dashboard/brand");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  return (
+    <div>
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-2xl font-semibold">Create Brand</h1>
+        <Link
+          to={"/dashboard/categories"}
+          className="bg-blue-600 text-white px-4 py-2 rounded-md"
+        >
+          Cancel
+        </Link>
+      </div>
+      <Form
+        {...formItemLayout}
+        variant="filled"
+        onFinish={handleSubmit}
+        form={form}
+      >
+        <Form.Item
+          label="Brand Name"
+          name="name"
+          rules={[
+            {
+              required: true,
+              message: "Please enter brand name!",
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+
+        <Form.Item
+          wrapperCol={{
+            offset: 6,
+            span: 16,
+          }}
+        >
+          <Button type="primary" htmlType="submit">
+            Submit
+          </Button>
+        </Form.Item>
+      </Form>
+    </div>
+  );
+};
+
+export default CreateBrand;

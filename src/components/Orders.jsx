@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import {  Button, message, Modal, Select, Form, Spin } from "antd";
+import { Button, message, Modal, Select, Form, Spin, Empty } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import OrderService from "../service/order.service";
 import AuthService from "../service/auth.service";
@@ -133,52 +133,64 @@ const Orders = () => {
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-2xl font-semibold">Buyurtmalar</h1>
         </div>
-        <div className="p-4 border rounded-md grid grid-cols-4 gap-2">
-          {allOrders?.map((item) => {
-            const user = userDetails[item.userId];
-            return (
-              <div
-                className="relative p-4 border rounded-md hover:bg-gray-100"
-                key={item._id}
-              >
-                <Link to={item._id} className="block">
-                  <h1>Order by: {user ? user.name : item.userId}</h1>
-                  <h1>
-                    Status:{" "}
-                    <span
-                      className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                        item.status === "pending"
-                          ? "bg-yellow-100 text-yellow-500"
-                          : item.status === "completed"
-                          ? "bg-green-100 text-green-800"
-                          : "bg-red-100 text-red-800"
-                      }`}
-                    >
-                      {item.status}
-                    </span>
-                  </h1>
-                  <div>
-                    {item.products.map((orders, index) => (
-                      <h1 key={index}>Products quantity: {orders.quantity}</h1>
-                    ))}
+        {allOrders.length === 0 ? (
+          <>
+            <div className="flex flex-col items-center justify-center h-[70vh]">
+              <Empty description={"Buyurtmalar yo'q"} />
+            </div>
+          </>
+        ) : (
+          <div className="p-4 border rounded-md grid grid-cols-1 md:grid-cols-4 gap-2">
+            <>
+              {allOrders?.map((item) => {
+                const user = userDetails[item.userId];
+                return (
+                  <div
+                    className="relative p-4 border rounded-md hover:bg-gray-100"
+                    key={item._id}
+                  >
+                    <Link to={item._id} className="block">
+                      <h1>Order by: {user ? user.name : item.userId}</h1>
+                      <h1>
+                        Status:{" "}
+                        <span
+                          className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                            item.status === "pending"
+                              ? "bg-yellow-100 text-yellow-500"
+                              : item.status === "completed"
+                              ? "bg-green-100 text-green-800"
+                              : "bg-red-100 text-red-800"
+                          }`}
+                        >
+                          {item.status}
+                        </span>
+                      </h1>
+                      <div>
+                        {item.products.map((orders, index) => (
+                          <h1 key={index}>
+                            Products quantity: {orders.quantity}
+                          </h1>
+                        ))}
+                      </div>
+                    </Link>
+                    <div className="absolute top-[70%] right-2 group-hover:opacity-100 transition-opacity duration-200">
+                      <Button
+                        icon={<EditOutlined />}
+                        onClick={() => handleEdit(item._id)}
+                        className="mr-2"
+                      />
+                      <Button
+                        icon={<DeleteOutlined />}
+                        onClick={() => handleDelete(item._id)}
+                        danger
+                      />
+                    </div>
                   </div>
-                </Link>
-                <div className="absolute top-[70%] right-2 group-hover:opacity-100 transition-opacity duration-200">
-                  <Button
-                    icon={<EditOutlined />}
-                    onClick={() => handleEdit(item._id)}
-                    className="mr-2"
-                  />
-                  <Button
-                    icon={<DeleteOutlined />}
-                    onClick={() => handleDelete(item._id)}
-                    danger
-                  />
-                </div>
-              </div>
-            );
-          })}
-        </div>
+                );
+              })}{" "}
+            </>
+          </div>
+        )}
       </div>
       <Modal
         title="Edit Order"

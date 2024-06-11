@@ -23,10 +23,10 @@ import CreateCategry from "./components/CreateCategry";
 import ProductDetails from "./components/ProductDetails";
 import EditProduct from "./components/EditProduct";
 import OrderDetails from "./components/OrderDetails";
-import OrderCreate from "./components/OrderCreate";
 import Create from "./components/Create";
 import { CreateLinks } from "./data";
-// import PrivateRoute from "./PrivateRoute";
+import Brand from "./components/Brand";
+import CreateBrand from "./components/CreateBrand";
 
 const App = () => {
   return (
@@ -62,9 +62,10 @@ const App = () => {
               <Route path="blog" element={<Blog />} />
               <Route path="orders" element={<Orders />} />
               <Route path="orders/:id" element={<OrderDetails />} />
-              {/* <Route path="orders/create" element={<OrderCreate />} /> */}
               <Route path="categories" element={<Categories />} />
               <Route path="categories/create" element={<CreateCategry />} />
+              <Route path="brand" element={<Brand />} />
+              <Route path="brand/create" element={<CreateBrand />} />
               <Route path="product/create" element={<CreateProducts />} />
             </Route>
             <Route path="*" element={<NotFound />} />

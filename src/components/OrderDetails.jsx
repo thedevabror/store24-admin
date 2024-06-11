@@ -41,9 +41,8 @@ const OrderDetails = () => {
         console.log(error);
       }
     };
-
     getUser();
-  }, [dispatch, id]);
+  }, [dispatch, id, singleOrder.userId]);
 
   if (isLoading) {
     return (
@@ -59,7 +58,7 @@ const OrderDetails = () => {
         <div className="py-14 px-4 md:px-6 2xl:px-20 2xl:container 2xl:mx-auto">
           <div className="flex justify-start item-start space-y-2 flex-col ">
             <h1 className="text-3xl lg:text-4xl font-semibold leading-7 lg:leading-9  text-gray-800">
-              Order 
+              Order
             </h1>
             <p className="text-base font-medium leading-6 text-gray-600">
               {singleOrder.createdAt}
@@ -72,38 +71,53 @@ const OrderDetails = () => {
                   Mijozning buyurtmalari
                 </p>
                 <div className="mt-4 md:mt-6 flex  flex-col justify-start items-start gap-5 md:items-center w-full ">
-                  {singleOrder?.products?.map((item) => (
-                    <div
-                      className="border-b pb-3 md:flex-row flex-col flex justify-between items- w-full gap-5"
-                      key={item.productId._id}
-                    >
-                      <div className="w-full md:w-60">
-                        <img
-                          className="w-full rounded-md"
-                          src={`https://abrorkhandev.uz/public/${item?.productId?.images[0].slice(
-                            8
-                          )}`}
-                          alt="dress"
-                        />
+                  {singleOrder?.products?.map((item) => {
+                    if (!item?.productId) {
+                      return (
+                        <div
+                          className="flex items-center justify-center w-full"
+                          key={item?._id || Math.random()}
+                        >
+                          <h1 className="text-xl">Maxsulot topilmadi (internet xatosi yoki maxsulot o'chirilgan) :(</h1>
+                        </div>
+                      );
+                    }
+                    return (
+                      <div
+                        className="border-b pb-3 md:flex-row flex-col flex justify-between items- w-full gap-5"
+                        key={item?.productId?._id}
+                      >
+                        <div className="w-full md:w-60">
+                          <img
+                            className="w-full rounded-md"
+                            src={`https://abrorkhandev.uz/public/${item?.productId?.images[0].slice(
+                              8
+                            )}`}
+                            alt="product"
+                          />
+                        </div>
+                        <Link
+                          to={`/dashboard/product/${item?.productId?._id}`}
+                          className="w-full flex flex-col justify-start items-start space-y-8"
+                        >
+                          <h3 className="text-xl xl:text-2xl font-semibold leading-6 text-gray-800">
+                            {item?.productId?.name}
+                          </h3>
+                        </Link>
+                        <div className="flex justify-between space-x-8 items-start w-full">
+                          <p className="text-base xl:text-lg leading-6">
+                            ${item?.productId?.price}
+                          </p>
+                          <p className="text-base xl:text-lg leading-6 text-gray-800">
+                            {item?.quantity} ta
+                          </p>
+                          <p className="text-base xl:text-lg font-semibold leading-6 text-gray-800">
+                            ${singleOrder?.totalPrice}
+                          </p>
+                        </div>
                       </div>
-                      <Link to={`/dashboard/product/${item.productId._id}`} className="w-full flex flex-col justify-start items-start space-y-8">
-                        <h3 className="text-xl xl:text-2xl font-semibold leading-6 text-gray-800">
-                          {item.productId.name}
-                        </h3>
-                      </Link>
-                      <div className="flex justify-between space-x-8 items-start w-full">
-                        <p className="text-base xl:text-lg leading-6">
-                          ${item.productId.price}
-                        </p>
-                        <p className="text-base xl:text-lg leading-6 text-gray-800">
-                          {item.quantity} ta
-                        </p>
-                        <p className="text-base xl:text-lg font-semibold leading-6 text-gray-800">
-                          ${singleOrder.totalPrice}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
               <div className="flex justify-center md:flex-row flex-col items-stretch w-full space-y-4 md:space-y-0 md:space-x-6 xl:space-x-8">
@@ -117,7 +131,7 @@ const OrderDetails = () => {
                         Subtotal
                       </p>
                       <p className="text-base leading-4 text-gray-600">
-                        ${singleOrder.totalPrice}
+                        ${singleOrder?.totalPrice}
                       </p>
                     </div>
                     <div className="flex justify-between items-center w-full">
@@ -151,7 +165,7 @@ const OrderDetails = () => {
                     /> */}
                     <div className=" flex justify-start items-start flex-col space-y-2">
                       <p className="text-base font-semibold leading-4 text-left text-gray-800">
-                        {user.name}
+                        {user?.name}
                       </p>
                     </div>
                   </div>
@@ -178,7 +192,7 @@ const OrderDetails = () => {
                       />
                     </svg>
                     <p className="cursor-pointer text-sm leading-5 text-gray-800">
-                      {user.email}
+                      {user?.email}
                     </p>
                   </div>
                 </div>

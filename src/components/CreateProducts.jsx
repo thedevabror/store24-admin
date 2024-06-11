@@ -72,6 +72,7 @@ const CreateProducts = () => {
     formData.append("brand", values.brand);
     formData.append("color", values.color);
     formData.append("attributes", JSON.stringify(attributes)); // Adjust attributes if needed
+    formData.append("stock", values.stock);
 
     fileList.forEach((file) => {
       formData.append("images", file.originFileObj);
@@ -203,6 +204,14 @@ const CreateProducts = () => {
                 </Option>
               ))}
           </Select>
+        </Form.Item>
+
+        <Form.Item
+          label="Maxsulot soni"
+          name="stock"
+          rules={[{ required: true, message: "Maxsulot sonini kiriting!" }]}
+        >
+          <InputNumber style={{ width: "100%" }} />
         </Form.Item>
 
         <Form.Item

@@ -100,9 +100,9 @@ const ProductDetails = () => {
               </div>
               <div className="text-[#8b8e99] text-[13px]">
                 <p>
-                  {singleProduct?.sold === 0
+                  {singleProduct?.soldCount === 0
                     ? "Buyurtmalar yo'q"
-                    : `${singleProduct?.sold} buyurtma`}
+                    : `${singleProduct?.soldCount} buyurtma`}
                 </p>
               </div>
             </div>

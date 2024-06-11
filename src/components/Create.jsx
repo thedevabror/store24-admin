@@ -8,7 +8,7 @@ const Create = () => {
       <div>
         <h1 className="font-bold text-2xl text-center">Nima yaratamiz?</h1>
       </div>
-      <div className="grid grid-cols-4 gap-5 py-10">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-5 py-10">
         {CreateLinks.map((item) => (
           <Link to={item.link} className="flex items-center justify-around py-3 px-5 border rounded-md hover:shadow">
             <div>{item.icon}</div>
