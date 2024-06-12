@@ -140,55 +140,53 @@ const Orders = () => {
             </div>
           </>
         ) : (
-          <div className="p-4 border rounded-md grid grid-cols-1 md:grid-cols-4 gap-2">
-            <>
-              {allOrders?.map((item) => {
-                const user = userDetails[item.userId];
-                return (
-                  <div
-                    className="relative p-4 border rounded-md hover:bg-gray-100"
-                    key={item._id}
-                  >
-                    <Link to={item._id} className="block">
-                      <h1>Order by: {user ? user.name : item.userId}</h1>
-                      <h1>
-                        Status:{" "}
-                        <span
-                          className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                            item.status === "pending"
-                              ? "bg-yellow-100 text-yellow-500"
-                              : item.status === "completed"
-                              ? "bg-green-100 text-green-800"
-                              : "bg-red-100 text-red-800"
-                          }`}
-                        >
-                          {item.status}
-                        </span>
-                      </h1>
-                      <div>
-                        {item.products.map((orders, index) => (
-                          <h1 key={index}>
-                            Products quantity: {orders.quantity}
-                          </h1>
-                        ))}
-                      </div>
-                    </Link>
-                    <div className="absolute top-[70%] right-2 group-hover:opacity-100 transition-opacity duration-200">
-                      <Button
-                        icon={<EditOutlined />}
-                        onClick={() => handleEdit(item._id)}
-                        className="mr-2"
-                      />
-                      <Button
-                        icon={<DeleteOutlined />}
-                        onClick={() => handleDelete(item._id)}
-                        danger
-                      />
+          <div className="p-4 border rounded-md grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+            {allOrders?.map((item) => {
+              const user = userDetails[item.userId];
+              return (
+                <div
+                  className="relative p-4 border rounded-md hover:bg-gray-100"
+                  key={item._id}
+                >
+                  <Link to={item._id} className="block">
+                    <h1>Order by: {user ? user.name : item.userId}</h1>
+                    <h1>
+                      Status:{" "}
+                      <span
+                        className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                          item.status === "pending"
+                            ? "bg-yellow-100 text-yellow-500"
+                            : item.status === "completed"
+                            ? "bg-green-100 text-green-800"
+                            : "bg-red-100 text-red-800"
+                        }`}
+                      >
+                        {item.status}
+                      </span>
+                    </h1>
+                    <div>
+                      {item.products.map((orders, index) => (
+                        <h1 key={index}>
+                          Products quantity: {orders.quantity}
+                        </h1>
+                      ))}
                     </div>
+                  </Link>
+                  <div className="absolute top-[70%] right-2 group-hover:opacity-100 transition-opacity duration-200">
+                    <Button
+                      icon={<EditOutlined />}
+                      onClick={() => handleEdit(item._id)}
+                      className="mr-2"
+                    />
+                    <Button
+                      icon={<DeleteOutlined />}
+                      onClick={() => handleDelete(item._id)}
+                      danger
+                    />
                   </div>
-                );
-              })}{" "}
-            </>
+                </div>
+              );
+            })}{" "}
           </div>
         )}
       </div>
