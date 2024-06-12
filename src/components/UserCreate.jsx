@@ -26,7 +26,7 @@ const UserCreate = () => {
       <div>
         <h1 className="font-bold text-xl">Mijoz qo'shish</h1>
       </div>
-      <div className="max-w-2xl w-full m-auto">
+      <div className="max-w-2xl w-full m-auto py-5">
         <Form
           layout="vertical"
           requiredMark="optional"

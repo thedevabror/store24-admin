@@ -8,7 +8,7 @@ import {
 } from "../app/slice/products";
 import ProductService from "../service/product.service";
 import { Button, Card, List, message } from "antd";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { DeleteOutlined } from "@ant-design/icons";
 const Categories = () => {
   const dispatch = useDispatch();
   const { productCategories } = useSelector((state) => state.productCategory);

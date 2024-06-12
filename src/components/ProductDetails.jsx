@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { HiMiniStar } from "react-icons/hi2";
 import { useDispatch, useSelector } from "react-redux";
-// import ProductService from "../services/product.service";
 import {
   getProductSucces,
   getSingleProductStart,
@@ -10,7 +9,6 @@ import {
 } from "../app/slice/products";
 import ProductService from "../service/product.service";
 import { Button, Modal, Spin } from "antd";
-import { BiEdit } from "react-icons/bi";
 
 const ProductDetails = () => {
   const dispatch = useDispatch();
@@ -64,7 +62,7 @@ const ProductDetails = () => {
     <>
       <div className="grid grid-cols-1 justify-center min-[1210px]:grid-cols-2 gap-5 py-10 px-5 2xl:px-10">
         <div className="flex flex-col md:flex-row gap-5 max-[1210px]:justify-center">
-          <div className="h-[100px] grid grid-cols-1 gap-5">
+          <div className="h-[100px] flex flex-row xl:flex-col gap-5">
             {singleProduct?.images?.map((img, index) => (
               <img
                 key={index}
