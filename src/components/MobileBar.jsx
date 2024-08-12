@@ -1,8 +1,8 @@
 import React from "react";
-import { FaPlus, FaCog, FaUser } from "react-icons/fa";
+import { FaPlus, FaUser } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 import { Tooltip } from "react-tooltip";
-import { Brand, Categories, Dashboard, Orders } from "../utils/svg";
+import { Brand, Categories, Dashboard, Orders, Products } from "../utils/svg";
 
 const MobileBar = () => {
   return (
@@ -30,7 +30,7 @@ const MobileBar = () => {
           data-tip="Maxsulotlar"
           className="inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group"
         >
-          <FaCog className="w-5 h-5 mb-1 text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500" />
+          <Products />
           <span className="sr-only">Maxsulotlar</span>
         </NavLink>
         <div className="flex items-center justify-center rounded-full">

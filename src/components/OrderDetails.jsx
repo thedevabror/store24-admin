@@ -90,7 +90,7 @@ const OrderDetails = () => {
                         <div className="w-full md:w-60">
                           <img
                             className="w-full rounded-md"
-                            src={`https://abrorkhandev.uz/public/${item?.productId?.images[0].slice(
+                            src={`https://store24-backend-production.up.railway.app/public/${item?.productId?.images[0].slice(
                               8
                             )}`}
                             alt="product"

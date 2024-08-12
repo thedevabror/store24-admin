@@ -10,7 +10,7 @@ const Layout = () => {
       <MobileBar />
       <div className="flex-1 flex flex-col">
         {/* <Header /> */}
-        <div className="px-2 py-20 bg-gray-100 min-h-screen relative md:w-[80%] md:left-[20%] min-[400px]:w-full min-[400px]:left-0">
+        <div className="px-2 py-20 bg-gray-100 min-h-screen relative md:w-[80%] md:left-[20%] min-[400px]:w-full min-[400px]:left-0 overflow-x-hidden">
           <Outlet />
         </div>
       </div>

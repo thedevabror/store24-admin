@@ -27,6 +27,7 @@ import Create from "./components/Create";
 import { CreateLinks } from "./data";
 import Brand from "./components/Brand";
 import CreateBrand from "./components/CreateBrand";
+import "./App.css"
 
 const App = () => {
   return (

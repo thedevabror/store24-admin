@@ -2,7 +2,7 @@ import axios from "axios";
 import { getToken } from "./axiosConfig";
 
 const api = axios.create({
-  baseURL: "https://abrorkhandev.uz/api/",
+  baseURL: "https://store24-backend-production.up.railway.app/api/",
   headers: {
     Accept: "application/json",
   },
